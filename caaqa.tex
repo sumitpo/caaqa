@@ -1,0 +1,284 @@
+\documentclass[12pt]{ctexbook}
+\usepackage{hyperref}
+\usepackage[toc,page]{appendix}
+\usepackage[T1]{fontenc}
+\hypersetup{
+    colorlinks=true,
+    citecolor=violet,
+    filecolor=red,
+    linkcolor=blue,
+    urlcolor=cyan
+}
+\usepackage{minitoc}
+\usepackage{float}
+\usepackage{fix-cm}
+\usepackage{tabularx}
+\usepackage{listings}
+\usepackage{amsmath}
+\usepackage{multirow}
+
+\usepackage{array}
+\newcolumntype{C}[1]{>{\centering\arraybackslash}m{#1}}
+
+\newcommand{\dash}{——}
+
+\usepackage{epigraph}
+\setlength{\epigraphwidth}{0.6\textwidth}
+\setlength{\epigraphrule}{0.5pt}
+\renewcommand{\textflush}{flushright}       % 右对齐
+\renewcommand{\sourceflush}{flushright}
+\usepackage{comment}
+\usepackage{xsim}
+
+\newenvironment{boxedexercise}
+  {\par\noindent\fbox{\begin{minipage}{\dimexpr\linewidth-2\fboxsep-2\fboxrule}\relax}}
+  {\end{minipage}}
+
+\newenvironment{boxedsolution}
+  {\par\noindent\color{black}\fbox{\begin{minipage}{\dimexpr\linewidth-2\fboxsep-2\fboxrule}\relax}}
+  {\end{minipage}}
+
+\xsimsetup{
+  exercise/name = 题目,
+  solution/name = 解答,
+  exercise/the-counter = \arabic{exercise}.,
+%   solution/within = exercise,        % 每个解答对应一个题目
+%   print-solutions/headings/section* = true,
+%   print-solutions=true              % 是否打印所有答案（改为 false 可隐藏）
+}
+\includecomment{solution}
+
+
+\usepackage[sectionbib]{natbib}
+\usepackage{chapterbib}
+% \addbibresource{./bibs/16.bib}
+
+\usepackage{fancyvrb}
+\newcommand\userinput[1]{\textbf{#1}}
+
+% --------------code list------------------
+
+\usepackage[T1]{fontenc}
+\usepackage[table,xcdraw]{xcolor}
+\newcommand{\listingsttfamily}{\fontfamily{UbuntuMono-Regular}\small}
+
+\lstdefinestyle{prettycode}{
+  basicstyle=\listingsttfamily,
+%   backgroundcolor=\color{backcolour},
+  aboveskip={0.9\baselineskip},
+  keepspaces=true,
+}
+% --------------code list------------------
+
+\makeatletter
+\newcommand\HUGE{\@setfontsize\Huge{40}{50}}
+\makeatother
+
+\usepackage[font={small,it}]{caption}
+
+\usepackage{tcolorbox}
+
+% \lstset{ %
+%    language=bash,                % choose the language of the code
+%    basicstyle=\footnotesize,       % the size of the fonts that are used for the code
+%    numbers=left,                   % where to put the line-numbers
+%    numberstyle=\footnotesize,      % the size of the fonts that are used for the line-numbers
+%    stepnumber=1,                   % the step between two line-numbers. If it is 1 each line will be numbered
+%    numbersep=5pt,                  % how far the line-numbers are from the code
+%    backgroundcolor=\color{white},  % choose the background color. You must add \usepackage{color}
+%    showspaces=false,               % show spaces adding particular underscores
+%    showstringspaces=false,         % underline spaces within strings
+%    showtabs=false,                 % show tabs within strings adding particular underscores
+%    frame=single,           % adds a frame around the code
+%    tabsize=2,          % sets default tabsize to 2 spaces
+%    captionpos=b,           % sets the caption-position to bottom
+%    breaklines=true,        % sets automatic line breaking
+%    breakatwhitespace=false,    % sets if automatic breaks should only happen at whitespace
+%    escapeinside={\%*}{*)}          % if you want to add a comment within your code
+% }
+
+\usepackage{tikz}
+\usetikzlibrary{calc,backgrounds, arrows,shadows,positioning}
+
+% \setlength\paperheight{26cm}
+% \setlength\paperwidth{18.4cm}
+\usepackage{geometry}
+\usepackage{listings}
+\geometry{left=2cm, right=2cm, top=3cm, bottom=2cm}
+
+%---------------------------------------------------%
+\usepackage{titlesec}
+\usepackage{multicol}
+
+%\titleformat{\chapter} {\normalfont\Large\bfseries}{\thesection}{1em}{}
+
+\titleformat
+{\chapter} % command
+[display] % shape
+{\bfseries\Large\itshape} % format
+{Chapter No. \ \thechapter} % label
+{0.5ex} % sep
+{
+    \rule{\textwidth}{1pt}
+    \vspace{1ex}
+    \centering
+} % before-code
+[
+\vspace{-0.5ex}%
+\rule{\textwidth}{0.3pt}
+] % after-code
+
+\titleformat{\section}
+   {\normalfont\Large\bfseries}{\thesection}{1em}{}
+
+\newcommand*{\setupTOC}{%
+\titleformat{\chapter}{}{}{0pt}{} 
+
+\titlespacing*{\chapter}{0pt}
+{*7} %  % vertical space before the title <<<<<<<<<<
+{*-15}  %  idem after title (in ex units + glue) <<<<<<<<<<<
+}
+
+\makeatletter
+\renewcommand\tableofcontents{%
+    \section*{\makebox[\linewidth][c]{\contentsname}%
+      \@mkboth{\MakeUppercase\contentsname}{\MakeUppercase\contentsname}}%
+	  \begingroup
+	  	% \small
+		\footnotesize
+		% \scriptsize
+		\begin{multicols}{2}%
+		\@starttoc{toc}%
+		\end{multicols}
+	  \endgroup
+    }
+\makeatother
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\definecolor{mygreen}{rgb}{0,0.6,0}
+\definecolor{mygray}{rgb}{0.5,0.5,0.5}
+\definecolor{mymauve}{rgb}{0.58,0,0.82}
+\definecolor{terminalbgcolor}{HTML}{330033}
+\definecolor{terminalrulecolor}{HTML}{000099}
+\newcommand{\lstconsolestyle}{
+\lstset{
+	backgroundcolor=\color{terminalbgcolor},
+	basicstyle=\color{white}\fontfamily{UbuntuMono}\footnotesize\selectfont,
+	breakatwhitespace=false,
+	breaklines=true,
+	captionpos=b,
+	commentstyle=\color{mygreen},
+	deletekeywords={...},
+	% escapeinside={\%*}{*)},
+	extendedchars=true,
+	frame=single,
+	keepspaces=true,
+	keywordstyle=\color{blue},
+	%language=none,
+	morekeywords={*,...},
+	numbers=none,
+	numbersep=5pt,
+  framerule=2pt,
+	numberstyle=\color{mygray}\tiny\selectfont,
+	rulecolor=\color{terminalrulecolor},
+	showspaces=false,
+	showstringspaces=false,
+	showtabs=false,
+	stepnumber=2,
+	stringstyle=\color{mymauve},
+	tabsize=2
+}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\title{Some things I did}
+
+\begin{document}
+\begin{titlepage} % Suppresses displaying the page number on the title page and the subsequent page counts as page 1
+	\newcommand{\HRule}{\rule{\linewidth}{0.5mm}} % Defines a new command for horizontal lines, change thickness here
+
+	\center % Centre everything on the page
+
+	%------------------------------------------------
+	%	Headings
+	%------------------------------------------------
+
+	\textsc{\LARGE Institution Name}\\[1.5cm] % Main heading such as the name of your university/college
+
+	\textsc{\Large Major Heading}\\[0.5cm] % Major heading such as course name
+
+	\textsc{\large Minor Heading}\\[0.5cm] % Minor heading such as course title
+
+	%------------------------------------------------
+	%	Title
+	%------------------------------------------------
+
+	\HRule\\[0.4cm]
+
+	{\HUGE\bfseries Computer Architecture A Quantitative Approach}\\[0.5cm] % Title of your document
+	% {\huge\bfseries Vol. 1: The Protocols}\\[0.3cm] % Title of your document
+
+	\HRule\\[1.5cm]
+
+	%------------------------------------------------
+	%	Author(s)
+	%------------------------------------------------
+
+	\begin{minipage}{0.4\textwidth}
+		\begin{flushleft}
+			\large
+			\textit{Author}\\
+      W. Richard Stevens
+		\end{flushleft}
+	\end{minipage}
+	~
+	\begin{minipage}{0.4\textwidth}
+		\begin{flushright}
+			\large
+			\textit{Supervisor}\\
+			Dr. Caroline \textsc{Becker} % Supervisor's name
+		\end{flushright}
+	\end{minipage}
+
+	% If you don't want a supervisor, uncomment the two lines below and comment the code above
+	%{\large\textit{Author}}\\
+	%John \textsc{Smith} % Your name
+
+	%------------------------------------------------
+	%	Date
+	%------------------------------------------------
+
+	\vfill\vfill\vfill % Position the date 3/4 down the remaining page
+
+	{\large\today} % Date, change the \today to a set date if you want to be precise
+
+	%------------------------------------------------
+	%	Logo
+	%------------------------------------------------
+
+	%\vfill\vfill
+	%\includegraphics[width=0.2\textwidth]{placeholder.jpg}\\[1cm] % Include a department/university logo - this will require the graphicx package
+
+	%----------------------------------------------------------------------------------------
+
+	\vfill % Push the date up 1/4 of the remaining page
+
+\end{titlepage}
+\dominitoc
+
+\pagenumbering{roman}
+\tableofcontents
+
+\clearpage
+\pagenumbering{arabic}
+\include{chapters/1}
+\include{chapters/2}
+\include{chapters/3}
+\include{chapters/4}
+\include{chapters/5}
+\include{chapters/6}
+\appendix
+\include{chapters/appA}
+\include{chapters/appB}
+\include{chapters/appC}
+\end{document}

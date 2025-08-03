@@ -1,0 +1,418 @@
+并行计算的潮流相适应。《计算机体系结构：量化研究方法》继续独领风骚，全面地介绍了体系
+结构方面的重大新进展！”
+—John Nickolls, NVIDIA
+“本书已经成为一本经典教科书了，这一版突出介绍了各种显式并行技术（数据、线程、请
+求）的兴起，各用整整一章来描述。数据并行一章尤为夺目：通过向量 SIMID、指令级 SIMID
+和GPU的对比，避开每种体系结构的专用术语，揭示了这些体系结构之间的相似与区别。”
+—Kunle Olukotum，斯坦福大学
+“《计算机体系结构：量化研究方法（第5版）》探讨了各种并行概念和它们各自的技术权衡。
+和过去的几个版本一样，这一新版本中同样涵盖了最新的技术发展趋势。两个重点是个人務动
+设备（PMID）和仓库级计算（WSC）的爆炸性增长—与原来一味追求性能相比，这里的焦点
+已经转为更全面地寻求性能与能效之间的平衡。这些趋势刺激了人们不断追求更强劲的处理能
+力，而这种追求又推动人们在并行道路上走得更远。”
+—Andrew N. Sloss，实施顾问，ARM公司
+ARM System Developer Guide 一书的作者
+作者简介
+John L. Hennessy 是斯坦福大学的第10任校长，从1977年开始在该校电子工程与计算机
+系任教。Hennessy 是IEEE 和 ACM会士，美国国家工程院、国家科学院和美国哲学院院士，美
+国艺术与科学院院士。他获得过众多奖项，如2001年度 Eckert-Mauchly 奖，表彰他对RISC
+技术的贡献；2001年度 Seymour Cray 计算机工程奖；与 David Patterson 共同获得的2000年
+度约翰•冯•诺依曼奖章。他还拥有7个荣誉博士学位。
+1981年，John L.Hennessy 带领几位研究生在斯坦福开始MIIPS项目的研究。1984年完成该
+项目之后，他暂时离开大学，与他人共同筹建 MIPS 计算机系统公司（也就是现在的MIPS 技术
+公司），这家公司开发了最早的商用 RISC微处理器之一。到 2006年，已经有20多亿个 MIIPS
+微处理器被用于视频游戏、掌上电脑、激光打印机和网络交换机等各种设备中。Hennessy 后来
+领导了 DASH（Director Architecture for Shared Memory，共享存储器控制体系结构）项目，这
+一项目设计了第一个可扩展缓存一致性多处理器原型，其中的许多重要思想都在现代多处理器
+中得到了应用。除了参与科研活动、履行学校职责之外，他仍作为前期顾问和投资者参与了无
+数的创业项目。
+David A. Patterson 自 1977年进人加州大学伯克利分校执教以来，一直讲授计算机体系结
+构课程，拥有该校计算机科学 Pardee 讲座教授职位。他因为教学成果显著而荣获了加州大学的
+杰出教学奖、ACM 的 Karlstrom 奖、IEEE 的 Mulligan教育奖章和本科生教学奖。因为在RISC
+方面的贡献而获得了IEEE 技术成就奖和 ACM Eckert-Mauchly 奖，他还因为在 RAID方面的贡
+献而分享了 IEEE Johnson 信息存储奖，并与John Hennessy 共同获得了 IEEE约翰•冯• 诺依曼
+奖章和C&C奖金。和 John Hennessy 相似，Patterson 也是美国艺术与科学院院士、美国计算机
+历史博物馆院士、ACM和IEEE 会士。他还被选人美国国家工程院、美国国家科学院和硅谷工
+程名人堂。Patterson 身美国总统信息技术顾问委员会委员，同时也是伯克利电子工程与计算
+机科学系计算机科学分部主任、计算机研究协会主席和 ACM主席。这一履历使他荣获了 ACM
+和CRA颁发的杰出服务奖。
+在加州大学伯克利分校，Patterson 领导了 RISCI 的设计与实现工作，这可能是第一台VL.SI
+精简指令集计算机，为商业 SPARC体系结构奠定了基础。他曾是廉价磁盘冗余阵列（Redundant
+2
+怍者简介
+Arrays of Inexpensive Disks,RAID）项目的领导者之一，正是由于这一项目，才有了后来许多
+公司出品的可靠存储系统。他还参与了工作站网络（Network of Workstations, NOW）项目，因
+为这一项目而有了因特网公司使用的集群技术和后来的云计算。这些项目获得了ACM 颁发的
+三个论文奖。作为“算法-机器-人类”（AMP）实验室和并行计算实验室的主管，他目前在这
+里开展自己的研究项目。AMP实验室的目标是开发可扩展的机器学习算法、适用于仓库级计算
+机的编程模型、能够快速洞悉云中海量数据的众包（Crowd-Sourcing）工具。并行计算实验室
+的目标是研发先进技术，为并行个人移动设备提供可扩展、可移植、方便快捷的效率软件。
+序言
+Hennessy 和 Patterson 合著的《计算机体系结构：量化研究方法》第1版是在我刚上研究生
+时出版的，因此，我属于第一批在本书指导下学习体系结构的人。要写一篇有用的序言，少不
+了要有作序者自己的独特观点，而我发现自己在这方面有点欠缺，因为我已深受本书前4个版
+本的影响。还有另外一个不利因素，就是我从学生时代就对这两位计算机科学巨匠心存敬畏，
+尽管后来我有机会与他们合作，近距离了解他们，但也可能正因如此，所以这种敬畏心现在仍
+未消失。不过，由于我从第一版开始就一直从事这一领域的研究，有机会看到它不断完善，欣
+赏它持久不变的实用性，这从一定程度上抵消了上述不利因素。
+几年前，英特尔取消其4GHz 单核 CPU 开发项目，转向多核 CPU研发，标志着业肉对更
+高 CPU时钟频率的激烈竞争正式结束，两年之后，本书第4版出版。经过两年的充分观察，John
+和Dave在书中将这一变化明确表述为计算技术在过去10年中的一个转折点，而不是一次非常
+随意的生产线升级。第4版对指令级并行（ILP）的强调有所降低，增加了线程级并行的相关内
+容；第5版则更进一步，用整整两章的篇幅来讨论线程级和数据级并行，而将 ILP 的讨论压缩
+为一章。新增加的第4 章会让刚刚接触新型图形处理引擎的读者受益匪浅，这一章的重点是数
+据级并行，解释了一些虽有不同但正在趋于一致的解决方案，这些方案是由通用处理器中的多
+媒体扩展以及可编程性日益增强的图形处理器提供的。这一章还有一些非常实用的内容：如果
+你一直被CUDA 术语搞得晕头转向，可以参考表4-10。（难题：“共享存储器”实际上是本地存
+储器，而“全局存储器”更接近于大众认知的共享存储器。）
+多核技术仍处在不断变化之中，但第5版还介绍了下一代重大技术：云计算。因特网的无
+处不在和 Web 服务的发展将人们的注意力引向两个极端：一端是超小型设备（智能手机、平板
+电脑），一端是超大型设备（仓库级计算系统）。第3章的 “融会贯通”一节（3.13节）介绍了
+ARM Cortex A8，它是智能手机中的一种常用 CPU，而新增加的整个第6章则专门结合仓库级
+计算系统讨论了请求级并行和数据级并行。在这一章中，John 和 Dave 将这些新出现的大型集
+群看作一类特的新型计算机——欢迎广大计算机架构师一同来推动这一新兴领域的发展。将
+第3版中的Google集群体系结构与这一版第6章中更现代化的具体实现进行对比，读者就可以
+欣赏到这一领域在过去10年的发展过程。
+本书的老读者将会再一次领略两位杰出计算机科学家的贡献，他们在整个职业生涯中，将
+严谨的学术研究和对前沿产品与技术的深刻理解非常完美地结合在一起，形成了一门艺术。如
+果你见过Dave 如何实施他一年两度的项目调整，如何精心筹办研讨会，从校企合作之中萃取最
+多的精华，如果你能回想起 John 在创办MIPS 时获得的巨大成功，或者曾经在Google 公司的走
+廊里碰到他（我偶尔就会在那里遇到他），那你就不会再为两位作者与业界交流何以如鱼得水而
+感到惊讶了。
+新老读者购买本书绝对物超所值，这可能是最重要的一点了。这本书之所以会成为不朽的
+经典，是因为它的每个版本都不只是更新，而是一次全面修订，力求向读者展示最新信息，以
+及作者对这个快速变化的迷人领域最独到的见解。对我来说，在从事这个行业20多年之后，它
+让我又一次有机会体验学生时代对这两位杰出师长的敬仰之情。
+—Luiz Andre Barroso, Google 公司
+
+
+
+
+
+前
+言
+本书的目的
+本书到现在已经是第5个版本了，我们的目标一直没有改变，就是要阐述那些为未来技术
+发展奠定基础的基本原理。计算机体系结构的各种发展机遇总是让我们激情澎湃，不曾有丝毫
+消退。我们在第1版中就作出过如下的论述：“这个学科不是令人昏昏欲睡、百无一用的纸版模
+型。绝对不是！这是一个受到人们热切关注的学科，需要在市场竟争力与成本-性能-能耗之间
+作好权衡，从事这个学科既可能导致可怕的失败，也可能带来显赫的成功。”
+在编写第1版时，我们的主要目的是希望改变人们原来学习和研究计算机体系结构的方式。
+现今，我们感到这一目标依然正确，依然重要。该领域日新月异，在对其进行研究时，必须采
+用真实计算机上的测量数据和真实示例，而不是去研究一大堆从来都不需要实现的定义和设计。
+我们不仅热烈欢迎过去与我们结伴而行的老读者，同样也非常欢迎现在刚刚加入我们的新朋友。
+不管怎样，我们都保证将采用同样的量化方法对真实系统进行分析。
+和前几版一样，在编写这个新版本时，我们力争使其既适用于学习高级计算机体系结构与
+设计课程的学生，也适用于专业的工程师和架构师。与第1版类似，这个版本重点介绍新平台
+（个人移动设备和仓库级计算机）和新体系结构（多核和 GPU）。这一版还秉承了前几版的做法，
+希望能够通过强调成本、性能、能耗之间的平衡和优秀的工程设计，揭去计算机体系结构的神
+秘面纱。我们相信这一领域正在日趋成熟，发展成为一门具备严格量化基础的经典理工学科。
+关于第5版
+我们曾经说过，第4版可能因为转向讨论多核芯片而成为自第1版以来的最重要版本。但
+我们收到了这样的反馈意见：第4版已经失去了第1版重点突出的优点，它一视同仁地讨论所
+有内容，不分重点和场合。我们非常确信，第5版不会再有这样的评价了。
+我们相信，最令人激动的地方在于计算规模的两个极端：以移动电话和平板电脑之类的个
+人移动设备（PMID）为客户端，以提供云计算的仓库级计算机为服务器。（具有敏锐观察力的
+读者可能已经看出本书封面上云计算的寓意。尽管这两个极端的规模大小不同，但它们在成本、
+性能和能效方面的共同主题给我们留下了深刻印象。因此，每一章的讨论背景都是PMID 和位
+库级计算机的计算，第6章是全新的一章，专门讨论仓库级计算机。
+本书的另一条主线是讨论并行的所有不同形式。我们首先在第1章指出了两种应用级别的
+并行，一个是数据级井行（DLP），它的出现是因为有许多数据项允许同时对其进行操作；另一
+个是任务级并行（TLP），它的出现是因为创建了一些可以独立执行并在很大程度上并行的工作
+任务。随后解释4种开发 DLP 和 TLP的体系结构样式，分别是：第3章介绍的指令级并行（ILP），
+第4章介绍的向量体系结构和图形处理器（GPU），这一章是第5版新增加的内容；第5章介绍
+的线程级并行；第6章通过仓库级计算机介绍的需求级井行（RLP），这一章也是第5版中新增
+加的。本书中，我们将存储器层次结构的内容提前到第2章，并将存储系统那一章改作附录D。
+我们对第4章、第6章的内容尤为感到自豪，第4章对GPU 的解读是目前最详尽、最清晰的，
+第6章首次公布了 Google 仓库级计算机的最新细节。
+与前几版相同，本书前三个附录提供了有关MIPS 指令集系统、存储器层次结构和流水线
+的基础知识，如果读者没有读过《计算机组成与设计》之类的书籍，可用作参考。为了在降低
+成本的同时还能提供一些读者感兴趣的补充材料，我们在网络上提供了另外9个附录，网址为：
+http://booksite.mkp.com/9780123838728。这些附录的页数之和比本书还要多呢！
+这一版继续发扬“以真实示例演示概念”的传统，并增加了全新的“融会贯通”部分。
+这一版中的“融会贯通”内容包括以下各服务器的流水线组成与存储器层次结构：ARM Cortex
+A8处理器、Intel core i7处理器、NVIDIA GTX-280和 GTX-480 GPU，还有Google 仓库级计
+算机。
+主题的选择与组织
+和以前一样，我们在选择主题时采用了一种保守的方法，毕竟这个领域中值得讨论的思想
+实在太多了，不可能在这样一本主要讨论基本原理的书中将其全部涵盖在内。我们没有面面俱
+到地分析读者可能遇到的所有体系结构，而是将重点放在那些在任何新计算机中都可能涉及的
+核心概念上。根据一贯坚持的选材标准，本书讨论的思想都经过深入研究并已被成功应用，其
+内容足以采用量化方法进行讨论。
+我们一直重点关注的内容都是无法从其他来源获取的同类资料，因此我们将继续尽可能讨
+论比较高级的内容。事实上，本书介绍的有些系统，就无法在文献中找到相关描述。如果读者
+需要了解更为基础的计算机体系结构知识，可以阅读《计算机组成与设计：硬件/软件接口》
+（Computer Organization and Design: The Hardware/Software Interface）一书。
+内容概述
+这一版对第1章进行了补充，其中包括能耗、静态功率、动态功率、集成电路成本、可靠
+前言3
+性和可用性的计算公式。（封二上也列出了这些公式。）在本书后续部分读者能够一直应用这些
+公式。除了计算机设计与性能测量方面的经典量化原理之外，还对PIAT一节进行了升级，采用
+了新的 SPECPower基准测试。
+我们认为，与1990年相比，指令集体系结构扮演的角色有所弱化，所以我们把这一部分内
+容作为了附录A。它仍然采用 MIPS64体系结构。（为便于快速查看，封三江总了 MIPS ISA 相
+关信息。）网站上的附录K介绍了10种 RISC体系结构、80x86、DEC VAX 和 IBM360/370，献
+给ISA爱好者们。
+随后，我们在第 2 章开始讨论存储器层次结构，这是因为很容易针对这些内容应用成本-
+性能-功耗原理，而且存储器是其余各章的关键内容。和上一版一样，附录B 对缓存机制作了
+概述，以供读者需要时查阅。第2章讨论了对缓存的10种高级优化方法。这一章还介绍了虚拟
+机，它便于提供保护、进行软硬件管理，而且在云计算中也扮演着重要角色。除了介绍 SRAM
+和 DRAM技术之外，这一章还包括了闪存的内容。PIAT示例选择了PMD中使用的ARM Cortex
+A8 和服务器中使用的 Intel Core i7。
+第3章主要研究高性能处理器中的指令级并行开发，包括超标量执行、分支预测、推理、
+动态调度和多线程。前面曾经提到，附录C是关于流水线的一个综述，以备随时查阅之用。第
+3 章还研究了 IP的局限性。和第2章一样，PIAT 示例还是 ARM Cortex A8 和 Intel Core i7。第
+3 版包括大量有关 Itamnium 和 VLIW的材料，现在这些内容放在网上的附录H中，这表明了我们
+的观点：这种体系结构未能达到过去所宣称的效果。
+多媒体应用程序（比如游戏和视频处理）的重要性在提高，因此，开发数据级并行的体系
+结构也变得更为重要。具体来说，越来越多的人在关注利用图形处理器（GPU）执行的运算，
+但很少有架构师了解 GPU到底是如何工作的。我们决定编写新的一章，主要就是为了揭开这种
+新型计算机体系结构的奥秘。第4章开始介绍向量体系结构，对多媒体 SIMID 指令集扩展和 GPU
+的解释就是以此为基础的。（网站上的附录G深入地讨论了向量体系结构。）GPU一节是本书最
+难写的部分，需要多次反复才能给出一个既精确又容易理解的描述。一个重大挑战就是术语。
+我们决定使用我们自己的术语，然后给出这些术语与 NVIDIA 官方术语之间的对应关系。这一
+章介绍了 Roofline 性能模型，然后用它来对比 Intel Core i7、NVIDIA GTX 280和 GTX 480 GPU。
+这一章还介绍了供PMD使用的 Tegra 2 GPU。
+第5章介绍多核处理器，探讨了对称、分布式存储器体系结构，考查了组织原理和性能。
+接下来是有关同步和存储器一致性模型的主题，所采用的示例是Intel Core i7。对片上互连网络
+感兴趣的读者可以阅读网站上的附录F，对更大规模多处理器和科学应用感兴趣的读者可以阅
+读网站上的附录I。
+前面曾经提到，第6 章介绍了计算机体系结构中的最新主题—仓库級计算机（Warchouse-
+Scale Computer, WCS）。依靠 Amazon Web 服务部门和 Google 工程师的帮助，本章整合了有关
+4
+前言
+WSC设计、成本与性能的详细资料，而以前了解这些内容的架构师寥塞无几。在开始描述WSC
+的体系结构和物理实现（及成本）之前，首先介绍了 MapReduce编程模型。从成本的角度可以
+解释为什么会有云计算，以及为何在云中使用 WSC进行计算的成本要低于在本地数据中心的
+计算成本。PIAT 实例是对Google WSC的描述，有些内容是首次公开的。
+接下来就是附录A到附录L。®附录A介绍 ISA 的原理，包括 MIPS64，附录K介绍 Alpha、
+MIPS、PowerPC和SPARC的64位版本及其多媒体扩展。其中还包括一些经典体系结构（80×86、
+VAX和IBM360/370和流行的嵌人指令集（ARM、Thumb、SuperHI、MIPS16和Mitsubishi M32R）。
+附录H与其相关，介绍了 VLIWISA 的体系结构和编译器。
+前面曾经提到，附录B和附录C是缓存与流水线基本概念的教程。建议对缓存不够熟悉的
+读者在阅读第2章之前先阅读附录B，新接触流水线的读者在阅读第3章之前先阅读附录C。
+附录 D“存储系统”包括：进一步讨论可靠性和可用性，以RAID6方案介绍为主体的RAID
+教程，非常珍贵的真实系统故障统计信息。接下来介绍了排队理论和 I/O 性能基准测试。我们
+评估了一个真实集群Internet Archive的成本、性能和可靠性。“融会贯通”部分以 NetApp FAS6000
+文件管理程序为例。
+附录E由 Thomas M.Conte撰写，汇总了嵌人式系统的相关内容。
+附录F 讨论网络互连，由 Timothy M.Pinkston 和 Jose Duato 进行了修订。附录G最初由 Krste
+Asanovit 撰写，其中详细介绍了向量处理器。就我们所知，这两个附录是其各自相关主题的最
+好材料。
+附录H详细介绍了 VLIW 和EPIC，也就是Itanium 采用的体系结构。
+附录I详细介绍了大规模共享存储器多处理方面用到的并行处理应用和一致性协议。附录J
+由 David Goldberg 撰写，详细介绍了计算机算法。
+附录L将第3版每一章中的“历史回顾与参考文献”部分集中在一起。对于各章介绍的思
+想，它尽量给予一个恰当的评价，并让读者了解这些创造性思想背后的历史。我们希望以此来
+展现人类在计算机设计方面的戏剧性发展过程。这个附录还提供了一些参考文献，主修体系结
+构的学生可能会非常喜欢它们。其中提到了本领域的一些经典论文，如果时间允许，建议读者
+阅读这些论文。直接听原创者讲述他们的思想，在深受教育的同时，也是一种享受。而“历史
+回顾”是以前版本中最受欢迎的章节之一。
+内容导读
+所有读者都应当从第1章开始阅读，除此之外并不存在什么唯一的最佳顺序。如果你不想
+阅读全部内容，可以参考下面这些顺序。
+① 本书中文版未收录附录D到附录L，这些内容可在英文书网站 btrp://ooksite.mkp.com/9780123838728获取。
+—编者注
+口 存储器层次结构：附录B、第2章、附录D。
+口 指令级并行：附录C、第3章、附录H。
+口数据级井行：第4章、第6章、附录G。
+口线程级并行：第5章、附录F、附录I。
+口 请求级井行：第6章。
+口ISA：附录A、附录K。
+附录E可以随时阅读，但在ISA 和缓存序列之后阅读，效果可能会更好一些。附录了可以
+在涉及运算时阅读。附录L的各部分内容应当在读完正文中相应章节后阅读。
+章节安排
+我们根据一种统一的框架安排内容，使各章在结构方面保持一致。首先会介绍一章的主题
+思想，然后是“交叉问题”部分，说明本章介绍的思想与其他各章有什么相互关系。接下来是
+“融会贯通”部分，通过展示如何在实际计算机中应用这些思想，将它们串在一起。
+再下面是“谬论与易犯错误”，让读者从他人的错误中汲取教训。我们将举例说明一些常见
+误解与体系结构陷阱，要避免犯错是非常困难的，哪怕你明明知道它们就在前面等着你。“谬论
+与易犯错误”部分是本书最受欢迎的内容。每一章都以一个“结语” 节结束。
+案例研究与练习
+每一章的最后都有案例研究和练习。这些案例研究由业内和学术界的专家编撰而成，通过
+难度逐渐增大的练习来探讨该章的关键概念，检验读者的理解程度。教师们会发现这些案例研
+究都非常详尽和完善，完全可以针对它们设计出一些练习。
+每个练习中用尖括号括起的内容（＜章.节>）指明了做这道题应该阅读哪部分正文内容。我
+们这样做的目的，一方面是为了提供复习内容，另一方面是希望帮助读者避免在还没有阅读相
+应正文的情况下去做一些练习。为了使读者大致了解完成一道题需要多长时间，我们为这些练
+习划定了不同等级：
+［10］ 短于5分钟（阅读和理解时间）；
+［15］5~15分钟给出完整答案；
+［20］ 15~20分钟给出完整答案：
+［25］ 在1小时内给出完整的书面答案；
+［30］小型编程项目：时间短于1整天；
+［40］ 大型编项目：耗时2周；
+［讨论］与他人一起讨论的主题。
+在 textbooks.elsevier.com 注册的老师可以得到案例研究与习题的解答。
+。
+刖
+补充材料
+我们还通过网络提供了多种资料，网址为 http://booksite.mkp.com/9780123838728/，内容
+包括：
+口 参考附录—涵盖了一系列高级主题，由相关领域的专家撰写；
+口历史材料，考察了正文各章所介绍的关键思想的发展形成过程；
+口供老师使用的PowerPoint幻灯片；
+口 PDF、EPS和 PPT格式的书中插图；
+口网上相关材料的链接；
+口勘误表。
+我们会定期补充新材料和网上其他可用资源的链接。
+帮助改进本书
+如果你阅读后面的“致谢”部分，将会看到我们已经下了很大的功夫来纠正错误。由于一
+本书会进行多次印刷，所以我们有机会进行更多的校订。如果你发现了任何遗留错误，请通过
+电子邮件联系出版商（ca5bugs@mkp.com）。®
+我们欢迎你对本书给出其他意见，请将它们发送到另一个电子信箱：ca.5comments@mkp.com。
+结语
+本书仍然是一本真正的合著作品，我们每人编写的章节和附录各占一半。如果没有对方完
+成另一半工作，如果没有对方在任务似乎无望完成时给予鼓励，如果没有对方点透某个难以表
+述的复杂概念，如果没有对方花费周末时间来审阅书稿，又如果没有对方在自己因为其他繁重
+职责而难以提笔时给予宽慰（从简历可以看出，这些职责是随着本书的版本号以指数形式增加
+的），我们无法想象这本书要花费多长时间才能完成。当然，对于你将要读到的内容，其中若有
+不当之处，我们也负有同等责任。
+John Hennessy
+David Patterson
+① 读者可以到图灵社区本书主面（www.ituring.com.cn/book/888）提交中译本勘误。—编者注
+致谢
+尽管本书仅正式发布了5个版本，但我们实际上已经写出过10个不同版本：第1版有3个
+版本（alpha版、beta版和最终版），第2、3、4版各有2个版本（beta 版和最终版）。一路走来，
+我们得到了数百位审阅者和用户的帮助，他们每一位都让这本书变得更好。因此，我们决定列
+出所有对本书各版本作出贡献的人员名单。
+第5版的贡献者
+和前几版一样，第5版也是一个有许多志愿者参与的集体成果。没有这些志愿者的帮助，
+这一版就不可能保持一贯的品质。
+审阅者
+南卡罗来纳大学的Jason D.Bakos、加州大学圣巴巴拉分校的 Diana Franklin、HP 实验室的
+Norman P. Jouppi、田纳西大学的 Gregory Peterson、HP 实验室的 Parthasarathy Ranganathan、克
+莱姆森大学的 Mark Smotherman、威斯康星大学麦迪逊分校的 Gurindar Sohi、西班牙加泰罗尼
+亚理工大学的 Mateo Valero 以及新泽西理工学院的 Sotirios G. Ziavraso
+加州大学伯克利分校并行实验室和 RAD 实验室的成员（他们多次审阅第1、4、6章，并使
+我们对GPU 和WSC 的解释部分得以成形）：Krste Asanovit、Michael Armbrust、Scott Beamer、
+Sarah Bird、 Bryan Catanzaro、Jike Chong、Henry Cook、 Derrick Coetzee、Randy Katz、Yunsup Lce、
+Leo Meyervich、Mark Murphy、Zhangxi Tan、Vasily Volkov 以及 Andrew Watermano
+顾问团
+Google 公司的 Luiz Andre Barroso、R&E Colwell & Assoc.公司的 Robert P. Colwell、ARM公
+司研发副总裁 Krisztian Flautner、宾州州立大学的 Mary Jane Irwin、NVIDIA公司的 David Kirk、
+Tensilica 首席科学家 Grant Martin、威斯康星大学麦迪逊分校的 Gurindar Sohi 以及西班牙加泰罗
+尼亚理工大学的 Mateo Valero。
+L
+致
+附录
+加州大学伯克利分校的 Krste Asanovit（附录G）、北卡罗来纳州立大学的 Thomas M. Conte
+（附录E）、西班牙巴伦西亚理工大学的 Jose Duato（附录F）、施乐帕洛阿尔托研究中心的 David
+Goldberg（附录J）、南加州大学的 Timothy M. Pinkston（附录F）。
+瓦伦西亚理工大学的Jose Flich 为附录F的更新作出了重大贡献。
+案例研究与练习
+南卡罗来纳大学的 Jason D. Bakos（第3 章和第4章）、加州大学圣巴巴拉分校的 Diana
+Franklin（第1章和附录C）、HP 实验室的 Norman P. Jouppi（第2章）、HP 实验室的 Naveen
+Muralimanohar（第2章）、田纳西大学的 Gregory Peterson（附录A）、HP 实验室的 Parthasarathy
+Ranganathan（第6章）、圣克拉拉大学的 Amr Zaky（第5 章和附录B）。
+Jichuan Chang、Kevin Lim 和Justin Meza 帮助制定和测试了第6章的案例研究与练习。
+补充材料
+NVIDIA 公司的 John Nickolls、Steve Keckler 和 Michael Toksvig（第4章 NVIDIA GPU），
+Intel 公司的 Victor Lee（第4章 Core i7 与GPU 的对比），美国劳伦斯伯克利国家实验室（LBNL）
+的 Jobn Shalf（第4章最新向量体系结构），LBNL 的 Sam Willams（第4章中的 Roofline i
+算机模型），澳大利亚国立大学的 Steve Blackburn 和得克萨斯大学奥斯汀分校的 Kathryn
+McKinley（第5章的 Inte】 性能与功耗测量），Google 公司的 Luiz Barroso、Urs Hblzle、Jimmy
+Clidaris、Bob Felderman 和 Chris Johnson（第6章的 Google WSC），Amazon Web 服务部的 James
+Hamilton（第6章的功率分配与成本模型）。
+南卡罗来纳大学的Jason D. Bakos 为这一版制作了新的授课幻灯片。
+最后，要再次特别感谢克莱姆森大学的 Mark Smotherman，他对我的最终手稿进行了技术
+审阅，发现了大量错误和含糊不清的地方，使本书的表述清晰了许多。
+当然，没有出版商，本书也不可能出版，所以我们要感谢 Morgan Kaufimann/EIsevier 全体
+员工的努力和支持。关于第5版，我们特别要感谢本书的编辑 Nate McFadden 和 Todd Green，
+他们协调了从开展调查、组织顾问团、制定案例研究与练习、组成焦点小组、手稿审读到附录
+更新的整个过程。
+我们还得感谢我们学校的员工 Margaret Rowland 和 Roxana Infante，在编写本书期间，她们
+为我们处理了无数的快递邮件，帮助我们化解了斯坦福和伯克利的许多紧急情况。
+最后要感谢我们的妻子，感谢她们容忍我们越来越早起进行阅读、思考和写作。
+前几版的贡献者
+审阅者
+普渡大学的 George Adams，，伊利诺伊大学香槟分校的 Sarita Adve，杨百翰大学的Jim
+Archibald，麻省理工大学的 Krste Asamovit，华盛顿大学的Jean-Loup Baer，东北大学的 Paul Barr，
+得克萨斯大学圣安东尼奥分校的 Rajendra V.Boppana，密歇根大学的 Mark Brehob，得克萨斯大
+学奥斯汀分校的 Doug Burger, SGl 的 John Burger, Michael Butler, Thomas Casavant,Rohit
+Chandra，密歇根大学的 Peter Chen，纽约州立大学石溪分校、卡内基•梅隆大学、斯坦福大学、
+克莱姆森大学和威斯康星大学的教学班、Vitesse 半导体公司的 Tim Coe,Robert P. Colwell, David
+Cummings,Bill Dally, David Douglas，西班牙巴伦西亚理工大学的Jose Duato，东南密苏里州
+立大学的 Anthony Duben，华盛顿大学的 Susan Eggers, Joel Emer，达特茅斯学院的Barry Fagin，
+加州大学圣克鲁斯分校的 Joel Ferguson,Carl Feynman,David Filo, HP 实验室的 Josh Fisher，
+DIKU 的Rob Fowler，华盛顿大学圣路易斯分校的 Mark Franklin,Kourosh Gharachorloo，哈佛
+大学的 Nikolas Gloy，施乐帕洛阿尔托研究中心的 David Goldberg,Intel 和西班牙加泰罗尼亚理
+工大学的 Antonio Gonzalez，威斯康星大学麦迪逊分校的 Jares Goodman，弗吉尼亚大学的
+Sudhanva Gurumurthi，哈维姆德学院的 David Harris, John Heinlein，斯坦福大学的 Mark Heinrich，
+加州大学圣克鲁斯分校的 Daniel Helman，威斯康星大学麦迪逊分校的 Mark D. Hill，IBM公司
+的 Martin Hopkins,HP 实验室的Jerry Huck，伊利诺伊大学香槟分校的 Wen-mei Hwu，宾州州
+立大学的Mary Jane Irwin,Truman Joe,Norm Jouppi，东北大学的David Kaeli，内布拉斯加大
+学的 Roger Kieckhafer，加拿大瑞尔森大学的 Lev G Kirischian,Earl Killian，普渡大学的Allan
+Knies,Don Knuth，斯坦福大学的Jeft Kuskin，微软研究院的James R. Larus，多伦多大学的Corinna
+Lee,Hank Levy，普林斯顿大学的Kai Li，阿拉斯加大学费尔班克斯分校的 Lori Liebrock，威
+斯康星大学麦迪逊分校的 Mikko Lipasti，北卡罗来纳大学教堂山分校的 Gyula A. Mago,Bryan
+Martin, Norman Matloff,David Meyer，伍斯特理工学院的 William Michalson,James Mooney，
+密歇根大学的 Trevor Mudge，得克萨斯大学奥斯汀分校的 Ramadass Nagarajan，卡内基 •梅隆
+大学的 David Nagle,Todd Narter, Victor Nelson，加州大学伯克利分校的 Vojin Oklobdzija，斯
+坦福大学的 Kunle Olukotun，宾州州立大学的 Bob Owens, Sun 公司的 Greg Papadapoulous, Joseph
+Pfeiffer，康奈尔大学的 Keshav Pingali，南加利福尼亚大学的 Timothy M. Pinkston，加拿大滑铁
+卢大学的 Bruno Preiss,Steven Przybylski, Jim Quinlan, Andras Radics，佐治亚理工学院的 Kishore
+Ramachandran，得克萨斯大学奥斯汀分校的 Joseph Rameh，康奈尔大学的 Anthony Reeves，密
+歇根州立大学的 Richard Reid，密歇根大学的 Steve Reinhardt，加州大学洛杉矶分校的 David
+Rennels，马萨诸塞大学阿默斯特分校的Arnold L.Rosenberg，普溏大学的 Kaushik Roy,Unysis
+4
+致谢
+的Emilio Salgueiro，得克萨斯大学奥斯汀分校的 Karthikeyan Sankaralingam, Peter Schnorf, Margo
+Seltzer，南卫理公会大学的 Behrooz Shirazi，卡肉基•梅隆大学的 Daniel Siewiorek，普林斯顿
+大学的J.P. Singh,Ashok Singhal，威斯康星大学麦迪逊分校的Jim Smith，哈佛大学的Mike Smith，
+克菜姆森大学的 Mark Smotherman，威斯康星大学麦迪逊分校的 Gurindar Sohi，华盛顿大学的
+Arun Somani，克莱姆森大学的 Gene Tagliarin，圣母大学的 Shyamkumar Thoziyoor，俄勒冈大学
+的 Evan Tick，北卡罗来纳大学教堂山分校的 Akhilesh Tyagi，弗吉尼亚大学的 Dan Upton，西班
+牙加泰罗尼亚理工大学的 Mateo Valero，加州大学圣克鲁斯分校的 Anujan Varma，康奈尔大学
+的 Thorsten von Eicken，得克萨斯 A&M大学的 Hank Walker，施乐帕洛阿尔托研究中心的 Roy
+Want, Sun公司的 David Weaver，以色列特拉维夫大学的 Shlomo Weiss,David Wells，克莱姆
+森大学的 Mike Westall, Maurice Wilkes, Eric Williams，普波大学的 Thomas Willis, Malcolm Wing，
+纽约州立大学石溪分校的 Larry Wittie，佐治亚理工学院的 Ellen Witte Zegura，新泽西理工学院
+的 Sotirios G Ziavraso
+附录
+向量附录由麻省理工学院的 Krste Asanovit 修订。浮点附录最初由施乐帕洛阿尔托研究中
+心的 David Goldberg 编写。
+练习
+普渡大学的 George Adams，
+威斯康星大学麦迪逊分校的 Todd M. Bezenek（纪念他的祖母
+Ethel Eshom），Susan Eggers,Anoop Gupta, David Hayes, Mark Hill, Allan Knies，加州大学圣
+克鲁斯分校的 Ethan L. Miller，康柏西部研究实验室的 Parthasarathy Ranganathan，威斯康星大
+学麦迪逊分校的 Brandon Schwartz, Michael Scott,Dan Siewiorek, Mike Smith, Mark Smotherman，
+Evan Tick,Thomas Williso
+案例研究与练习
+威斯康星大学麦迪逊分校的 Andrea C.Arpaci-Dusseau 和 Remzi H. Arpaci-Dusseau,R&E
+Colwell & Assoc.公司的 Robert P. Colwell，加州州立理工大学圣路易斯奥比斯波分校的 Diana
+Franklin，伊利诺伊大学香槟分校的 Wen-mei W.Hwu,HP 实验室的 Norman P. Jouppi，伊利诺
+伊大学香槟分校的 John W.Sias，威斯康星大学麦迪逊分校的 David A.Wood。
+特别感谢
+国防部高级研究计划署的 Duane Adams,Tom Adams，伊利诺伊大学香槟分校的 Sarita Adve，
+Anant Agarwal，罗彻斯特大学的 Dave Albonesi, Mitch Alsup,Howard Alt, Dave Anderson,Peter
+Ashenden,David Bailey，国防部高级研究计划署的 Bill Bandy，康柏西部研究实验室的 Luiz
+Barroso, Andy Bechtolsheim, C. Gordon Bell, Fred Berkowitz, IBM公司的 John Best, Dileep
+Bhandarkar,BDTI公司的 Jeff Bier, Mark Birman, David Black, David Boggs, JimBrady, Forrest
+Brewer，加州大学伯克利分校的 Aaron Brown，康柏西部研究实验室的 E.Bugnion，罗彻斯特大
+学的 Alper Buyuktosunoglu,Mark Callaghan,Jason F. Cantin,Paul Carrick, Chen-Chung Chang，
+罗彻斯特大学的 Lei Chen,Pete Chen,Nhan Chu，普林斯顿大学的 Doug Clark,Bob Cmelik，
+John Crawford, Zarka Cvetanovic，得克萨斯大学奥斯汀分校的 Mike Dahlin,Merrick Darley，
+DEC 西部研究实验室的员工，John DeRosa, Lloyd Dickman, J. Ding，华盛顿大学的 Susan Eggers，
+罗彻斯特大学的 Wael EI-Essawy,Mills 公司的 Patty Enriquez, Milos Ercegovac, Robert Garer，
+康柏西部研究实验室的 K.Gharachorloo,Garth Gibson, Ronald Greenberg,Ben Hao，康柏公司
+的 John Henning，威斯康星大学麦迪逊分校的 Mark Hill,Danny Hillis, David Hodges, Google
+公司的 Urs Holzle,David Hough,Ed Hudson，伊利诺伊大学香槟分校的 Chris Hughes,Mark
+Johnson,Lewis Jordan, Norm Jouppi, William Kahan, Randy Katz, Ed Kelly, Richard Kessler，
+Les Kohn，康柏计算机公司的 John Kowaleski,Dan Lambright, Sun 公司的 Gary Lauterbach，
+Corinna Lee, Ruby Lee, Don Lewine, Chao-Huang Lin，国防部高级研究计划署的 Paul Losleben，
+Yung-Hsiang Lu，国防部高级研究计划署的 Bob Lucas, Ken Lutz, Intel 伯克利研究实验室的Alan
+Mainwaring,AlMarston，罗格斯大学的 Rich Martin,John Mashey,Luke McDowell,Trimedia
+公司的 Sebastian Mirolo,Ravi Murthy, Biswadeep Nag,Sun公司的 Lisa Noordergraaf，国防部
+高级研究计划署的 Bob Parker，因特网研究中心的 Vern Paxson,Lawrence Prince, Steven
+Przybylski，国防部高级研究计划署的 Mark Pullen,Chris Rowen,Margaret Rowland，罗彻斯特
+大学的 Greg Semeraro,Bill Shannon, Behrooz Shirazi, Robert Shomler, Jim Slager，克莱姆森
+大学的 Mark Smotherman，华盛顿大学的 SMT研究组，国防部高级研究计划署的 Steve Squires，
+Ajay Sreekanth,Darren Staples,Charles Stapper, Jorge Stolfi, Peter Stoll，我们首次尝试编写本
+书时包容我们的斯坦福大学和加州大学伯克利分校的学生们，Bob Supnik,Steve Swanson,Paul
+Taysom,Shreekant Thakkar，新泽西理工学院的 Alexander Thomasian，国防部高级研究计划署
+的 John Toole,Trimedia 公司的 Kees A. Vissers, Willa Walker, David Weaver, EMC公司的 Ric
+Wheeler, Maurice Wilkes, Richard Zimmermano
+John Hennessy
+David Patterson

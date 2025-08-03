@@ -1,0 +1,42 @@
+\providecommand\numberofexercises{}
+\XSIM{solution-body}{}
+\XSIM{exercise-body}{exercise-1=={利用图2-3和附录B中表B-4中的数据，判断32KB四路组相联L1缓存的存储器 访问时间是否快于32 KB两路组相联L1缓存器。假定L.2 的缺失代价是快速L1 缓存访问时间的15倍。忽略超出L.2 之外的缺失。哪种缓存的存储器平均缓存时 间较短？}||exercise-2=={假定在一个普通四路组相联实现中，D-缓存访问次数是1-缓存访问次数的一半， 1-缓存和 D-缓存分别占该处理器功耗的25\%~15\%。根据上述研究的估计值，判 断路选择方法是否提高了每瓦功耗的性能。}}
+\XSIM{goal}{exercise}{points}{0}
+\XSIM{totalgoal}{points}{0}
+\XSIM{goal}{exercise}{bonus-points}{0}
+\XSIM{totalgoal}{bonus-points}{0}
+\XSIM{order}{1||2}
+\XSIM{use}{}
+\XSIM{use!}{}
+\XSIM{used}{exercise-1=={true}||exercise-2=={true}}
+\XSIM{print}{}
+\XSIM{print!}{}
+\XSIM{printed}{exercise-1=={true}||exercise-2=={true}}
+\XSIM{total-number}{2}
+\XSIM{exercise}{2}
+\XSIM{types}{exercise}
+\XSIM{idtypes}{1=={exercise}||2=={exercise}}
+\XSIM{collections}{exercise-1=={all exercises}||exercise-2=={all exercises}}
+\XSIM{collection:all exercises}{exercise-1||exercise-2}
+\setcounter{totalexerciseinall exercises}{2}
+\XSIM{id}{exercise-1=={1}||exercise-2=={2}}
+\XSIM{ID}{exercise-1=={1}||exercise-2=={2}}
+\XSIM{counter}{exercise-1=={1.}||exercise-2=={2.}}
+\XSIM{counter-value}{exercise-1=={1}||exercise-2=={2}}
+\XSIM{solution}{}
+\XSIM{chapter-value}{exercise-1=={2}||exercise-2=={2}}
+\XSIM{chapter}{exercise-1=={2}||exercise-2=={2}}
+\XSIM{section-value}{exercise-1=={2}||exercise-2=={2}}
+\XSIM{section}{exercise-1=={2.2}||exercise-2=={2.2}}
+\XSIM{sectioning}{exercise-1=={{2}{2}{1}{0}{0}}||exercise-2=={{2}{2}{2}{0}{0}}}
+\XSIM{subtitle}{}
+\XSIM{points}{}
+\XSIM{bonus-points}{}
+\XSIM{page-value}{exercise-1=={72}||exercise-2=={74}}
+\XSIM{page}{exercise-1=={72}||exercise-2=={74}}
+\XSIM{tags}{}
+\XSIM{topics}{}
+\XSIM{userpoints}{}
+\XSIM{bodypoints}{}
+\XSIM{userbonus-points}{}
+\XSIM{bodybonus-points}{}
